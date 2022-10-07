@@ -18,6 +18,7 @@
     "url": "https://github.com/Volodymyr-bart/Filmoteka.git/issues"
   },
   "dependencies": {
+    "axios": "^1.1.2",
     "firebase": "^9.9.4",
     "izitoast": "^1.4.0",
     "modern-normalize": "^1.1.0"
