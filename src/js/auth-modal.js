@@ -1,72 +1,43 @@
-const authLink = document.querySelector('.authorization');
-const authModal = document.querySelector('.auth-modal');
-const closeBtn = document.querySelector('#auth-modal-btn');
-const registrLink = document.querySelector('.registration');
-const registrModal = document.querySelector('#registr-modal');
-const registrCloseBtn = document.querySelector('#registr-modal-btn');
-const authBackdrop = document.querySelector('.auth-modal__box');
-const registrBackdrop = document.querySelector('.registr-modal__box');
-const authModalLink = document.querySelector('.authorization-link');
-const body = document.querySelector('body');
+const refs = {
+  startBackdrop: document.querySelector('.start-backdrop'),
+  startCloseBtn: document.querySelector('.start-close-btn'),
+  form: document.querySelector('.start-form'),
+};
 
-authLink.addEventListener('click', onClickAuthLink);
-registrLink.addEventListener('click', onClickRegistrLink);
+const LOCAL_KEY = 'form-data';
+let inputData = {};
 
-function onClickAuthLink(e) {
-  e.preventDefault();
-  authModal.classList.add('open');
-  body.classList.add('overflow-hidden');
-  document.addEventListener('keydown', onEscapeClick);
-  closeBtn.addEventListener('click', onClickCloseBtn);
-  authBackdrop.addEventListener('click', onAuthBackdropClick);
+refs.startCloseBtn.addEventListener('click', onCloseBtn);
+refs.form.addEventListener('submit', onFormSub);
+window.addEventListener(keydown, onEscClose);
+
+function onCloseBtn() {
+  refs.startBackdrop.classList.add('is-hidden');
+  document.body.classList.remove('scroll-lock');
 }
 
-function onClickCloseBtn() {
-  authModal.classList.remove('open');
-  body.classList.remove('overflow-hidden');
-  document.removeEventListener('keydown', onEscapeClick);
-  closeBtn.removeEventListener('click', onClickCloseBtn);
-  authBackdrop.removeEventListener('click', onAuthBackdropClick);
+function onFormSub(event) {
+  event.preventDefault();
+  const { name, email, password } = event.currentTarget.elements;
+  inputData.name = name.value;
+  inputData.email = email.value;
+  inputData.password = password.value;
+  localStorage.setItem(LOCAL_KEY, JSON.stringify(inputData));
+  event.currentTarget.reset();
+  refs.startBackdrop.classList.add('is-hidden');
 }
 
-function onAuthBackdropClick(e) {
-  if (e.currentTarget === e.target) {
-    onClickCloseBtn();
+function onEscClose(e) {
+  if (e.code !== 'Escape') {
+    return;
+  } else {
+    refs.startBackdrop.classList.add('is-hidden');
+    document.body.classList.remove('scroll-lock');
+    window.removeEventListener();
   }
 }
 
-function onClickRegistrLink(e) {
-  e.preventDefault();
-  authModal.classList.remove('open');
-  registrModal.classList.add('open');
-  registrCloseBtn.addEventListener('click', onRegistrCloseBtn);
-  registrBackdrop.addEventListener('click', onRegistrBackdropClick);
-  authModalLink.addEventListener('click', onClickAuthModalLink);
-}
-
-function onClickAuthModalLink(e) {
-  e.preventDefault();
-  registrModal.classList.remove('open');
-  authModal.classList.add('open');
-}
-
-function onRegistrCloseBtn() {
-  registrModal.classList.remove('open');
-  body.classList.remove('overflow-hidden');
-  registrCloseBtn.removeEventListener('click', onRegistrCloseBtn);
-  registrBackdrop.removeEventListener('click', onRegistrBackdropClick);
-  authModalLink.removeEventListener('click', onClickAuthModalLink);
-}
-
-function onRegistrBackdropClick(e) {
-  if (e.currentTarget === e.target) {
-    onRegistrCloseBtn();
-  }
-}
-
-function onEscapeClick(e) {
-  if (e.code === 'Escape') {
-    onClickCloseBtn();
-    onRegistrCloseBtn();
-  }
+export function openStarModal() {
+  refs.startBackdrop.classList.remove('is-hidden');
+  document.body.classList.remove('scroll-lock');
 }

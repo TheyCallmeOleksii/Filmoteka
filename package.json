@@ -4,8 +4,9 @@
   "description": "",
   "homepage": "https://Volodymyr-bart.github.io/Filmoteka",
   "scripts": {
-    "start": "parcel src/*.html",
-    "build": "parcel build src/*.html --public-url /Filmoteka/"
+    "start": "parcel serve src/*.html --port 3000",
+    "build": "parcel build src/*.html --public-url /Filmoteka/",
+    "dev": "parcel serve src/*.html --port 3000"
   },
   "repository": {
     "type": "git",
